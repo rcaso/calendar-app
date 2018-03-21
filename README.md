@@ -1,2 +1,6 @@
-# calendar-app
-App web que permite registrar citas y configurar el envio de notificaciones de las citas registradas
+# Build
+mvn clean package && docker build -t com.shava/calendar-app .
+
+# RUN
+
+docker rm -f calendar-app || true && docker run -d -p 8080:8080 -p 4848:4848 --name calendar-app com.shava/calendar-app 
