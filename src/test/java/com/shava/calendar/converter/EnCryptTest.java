@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import com.shava.calendar.encrypt.EnCrypter;
 
 /**
  *
@@ -45,7 +46,7 @@ public class EnCryptTest {
         System.out.println("encrypt");
         String value = "sistemas10";
         String expResult = "";
-        String result = EnCrypt.encrypt(value);
+        String result = EnCrypter.encrypt(value);
         System.out.println("Value "+value+" encrypted is "+result);
 //        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
@@ -60,7 +61,7 @@ public class EnCryptTest {
         System.out.println("decrypt");
         String value = "";
         String expResult = "";
-        String result = EnCrypt.decrypt(value);
+        String result = EnCrypter.decrypt(value);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         

@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.shava.calendar.authorization.entity;
+package com.shava.calendar.converter;
 
-import com.shava.calendar.converter.EnCrypt;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
+import com.shava.calendar.encrypt.EnCrypter;
 
 /**
  *
@@ -18,12 +18,12 @@ public class CryptoConverter implements AttributeConverter<String, String> {
 
     @Override
     public String convertToDatabaseColumn(String value) {
-        return EnCrypt.encrypt(value);
+        return EnCrypter.encrypt(value);
     }
 
     @Override
     public String convertToEntityAttribute(String value) {
-        return EnCrypt.decrypt(value);
+        return EnCrypter.decrypt(value);
     }
     
 }

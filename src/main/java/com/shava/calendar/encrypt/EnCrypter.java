@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.shava.calendar.converter;
+package com.shava.calendar.encrypt;
 
 import java.security.Key;
 import java.util.Base64;
@@ -14,7 +14,7 @@ import javax.crypto.spec.SecretKeySpec;
  *
  * @author raul
  */
-public interface EnCrypt {
+public interface EnCrypter {
     static final String ALGORITHM = "AES/ECB/PKCS5Padding";
     static final byte[] KEY = "secretKeyCrypto1".getBytes();
     

@@ -5,18 +5,21 @@
  */
 package com.shava.calendar.authorization.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shava.calendar.entity.BaseEntity;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Converter;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -28,22 +31,25 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "user_calendar")
-@NamedQueries({
     @NamedQuery(name = "UserCalendar.findAll", query = "SELECT u FROM UserCalendar u")
-    , @NamedQuery(name = "UserCalendar.findByUserCalendarId", query = "SELECT u FROM UserCalendar u WHERE u.userCalendarId = :userCalendarId")
-    , @NamedQuery(name = "UserCalendar.findByFirstName", query = "SELECT u FROM UserCalendar u WHERE u.firstName = :firstName")
-    , @NamedQuery(name = "UserCalendar.findByLastName", query = "SELECT u FROM UserCalendar u WHERE u.lastName = :lastName")
-    , @NamedQuery(name = "UserCalendar.findByEmail", query = "SELECT u FROM UserCalendar u WHERE u.email = :email")
-    , @NamedQuery(name = "UserCalendar.findByMobileNumber", query = "SELECT u FROM UserCalendar u WHERE u.mobileNumber = :mobileNumber")})
+    @NamedQuery(name = "UserCalendar.findByUserAndPassword", query = "SELECT u FROM UserCalendar u WHERE u.email = :email and u.userPassword = :password")
+    @NamedQuery(name = "UserCalendar.findByFirstName", query = "SELECT u FROM UserCalendar u WHERE u.firstName = :firstName")
+    @NamedQuery(name = "UserCalendar.findByLastName", query = "SELECT u FROM UserCalendar u WHERE u.lastName = :lastName")
+    @NamedQuery(name = "UserCalendar.findByEmail", query = "SELECT u FROM UserCalendar u WHERE u.email = :email")
+    @NamedQuery(name = "UserCalendar.findByMobileNumber", query = "SELECT u FROM UserCalendar u WHERE u.mobileNumber = :mobileNumber")
+    @NamedQuery(name = "UserCalendar.findByToken", query ="select a from UserCalendar a inner join a.tokens t where t.tokenHash = :tokenHash and t.tokenType = :tokenType and t.expiration > CURRENT_TIMESTAMP")
+    
 public class UserCalendar extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
+    public static final String FIND_BY_EMAIL = "UserCalendar.findByEmail";
+    public static final String FIND_BY_TOKEN = "UserCalendar.findByToken";
+    public static final String FIND_BY_USER_PASSWORD = "UserCalendar.findByUserAndPassword";
+    
     @Id
-    @SequenceGenerator(name="user_calendar_seq",
-                       sequenceName="user_calendar_user_calendar_id_seq",
-                       allocationSize=1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                    generator="user_calendar_seq")
+    @SequenceGenerator(name="user_calendar_seq",sequenceName="user_calendar_user_calendar_id_seq",allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator="user_calendar_seq")
     @Column(name = "user_calendar_id")
     private Integer userCalendarId;
     @Basic(optional = false)
@@ -64,19 +70,27 @@ public class UserCalendar extends BaseEntity implements Serializable {
     private String email;
     
     @NotNull
-    @Convert(converter = CryptoConverter.class)
     @Column(name = "user_password")
     private String userPassword;
     
     @Size(max = 20)
     @Column(name = "mobile_number")
     private String mobileNumber;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Token> tokens = new ArrayList<>();
 
     public UserCalendar() {
     }
 
     public UserCalendar(Integer userCalendarId) {
         this.userCalendarId = userCalendarId;
+    }
+    
+    public UserCalendar(String email, String password) {
+        this.userPassword = password;
+        this.email = email;
     }
 
     public UserCalendar(Integer userCalendarId, String firstName, String lastName, String email) {
@@ -145,6 +159,16 @@ public class UserCalendar extends BaseEntity implements Serializable {
         }
         return true;
     }
+    
+     public void addToken(Token token) {
+        this.tokens.add(token);
+        token.setAccount(this);
+    }
+
+    public void removeToken(Token token) {
+        this.tokens.remove(token);
+        token.setAccount(this);
+    }
 
     @Override
     public String toString() {
@@ -156,6 +180,24 @@ public class UserCalendar extends BaseEntity implements Serializable {
      */
     public String getUserPassword() {
         return userPassword;
+    }
+    
+    public void setUserPassword(String userPassword){
+        this.userPassword = userPassword;
+    }
+
+    /**
+     * @return the tokens
+     */
+    public List<Token> getTokens() {
+        return tokens;
+    }
+
+    /**
+     * @param tokens the tokens to set
+     */
+    public void setTokens(List<Token> tokens) {
+        this.tokens = tokens;
     }
     
 }

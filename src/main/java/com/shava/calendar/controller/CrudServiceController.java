@@ -10,13 +10,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceUnitUtil;
 import javax.persistence.Query;
-import javax.transaction.TransactionSynchronizationRegistry;
 
 /**
  *
@@ -28,12 +26,6 @@ public class CrudServiceController {
     @Inject
     @DbApplication
     protected EntityManager em;
-
-    /**
-     * La transaction registry.
-     */
-    @Resource
-    private TransactionSynchronizationRegistry transactionRegistry;
 
     /**
      * Creates the.
@@ -351,6 +343,11 @@ public class CrudServiceController {
         }
         return query.getResultList();
     }
+    
+    public EntityManager getEntityManager(){
+        return em;
+    }
+    
 
     /**
      * Instancia un nuevo crud service controller.
