@@ -10,7 +10,6 @@ import com.shava.calendar.entity.BaseEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
