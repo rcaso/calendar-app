@@ -5,6 +5,7 @@
  */
 package com.shava.calendar.appointment.entity;
 
+import com.shava.calendar.entity.BaseEntity;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -26,7 +27,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "notification")
 @NamedQueries({
     @NamedQuery(name = "Notification.findAll", query = "SELECT n FROM Notification n")})
-public class Notification implements Serializable {
+public class Notification extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id

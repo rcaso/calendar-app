@@ -5,11 +5,14 @@
  */
 package com.shava.calendar.appointment.entity;
 
+import com.shava.calendar.entity.BaseEntity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,8 +30,10 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "schedule")
 @NamedQueries({
-    @NamedQuery(name = "Schedule.findAll", query = "SELECT s FROM Schedule s")})
-public class Schedule implements Serializable {
+    @NamedQuery(name = "Schedule.findAll", query = "SELECT s FROM Schedule s where s.userCalendarId = :user order by s.createdDate ")})
+public class Schedule extends BaseEntity implements Serializable {
+    
+    public static final String FIND_ALL_SCHEDULES ="Schedule.findAll";
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -54,11 +59,12 @@ public class Schedule implements Serializable {
     private LocalDateTime endDate;
     
     @Column(name = "ind_notification")
-    private Integer indNotification;
+    @Enumerated(EnumType.STRING)
+    private ActivedType indNotification;
     
-    @Size(max = 2)
     @Column(name = "notification_type")
-    private String notificationType;
+    @Enumerated(EnumType.STRING)
+    private NotificationType notificationType;
     
     
     @Basic(optional = false)
@@ -117,19 +123,19 @@ public class Schedule implements Serializable {
         this.endDate = endDate;
     }
 
-    public Integer getIndNotification() {
+    public ActivedType getIndNotification() {
         return indNotification;
     }
 
-    public void setIndNotification(Integer indNotification) {
+    public void setIndNotification(ActivedType indNotification) {
         this.indNotification = indNotification;
     }
 
-    public String getNotificationType() {
+    public NotificationType getNotificationType() {
         return notificationType;
     }
 
-    public void setNotificationType(String notificationType) {
+    public void setNotificationType(NotificationType notificationType) {
         this.notificationType = notificationType;
     }
 
