@@ -23,7 +23,7 @@ import org.omnifaces.util.Servlets;
  *
  * @author raul
  */
-@WebFilter(filterName = "AuthenticationFilter", urlPatterns = {"/*.xhtml"})
+@WebFilter(filterName = "AuthenticationFilter", value = {"/*"})
 public class AuthenticationFilter extends HttpFilter {
 
     private static final Set<String> ALLOWED_PATHS = Collections.unmodifiableSet(new HashSet<>(

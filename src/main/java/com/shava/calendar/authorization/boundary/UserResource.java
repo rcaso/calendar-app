@@ -86,7 +86,7 @@ public class UserResource {
                 withParams()
                         .credential(credential)
                         .newAuthentication(true)
-                        .rememberMe(false)
+                        .rememberMe(login.isRemember())
         );
         
         return status.toString();
