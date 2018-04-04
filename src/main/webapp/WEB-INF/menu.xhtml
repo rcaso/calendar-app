@@ -14,7 +14,7 @@
                         <div class="profile">
                             <a id="profile-options" href="#">
                                 <p:graphicImage name="images/avatar.png" library="avalon-layout" styleClass="profile-image" style="border: 0 none"/>
-                                <span class="profile-name">Isabel Oliviera</span>
+                                <span class="profile-name">#{userInfo.fullName}</span>
                                 <i class="fa fa-fw fa-caret-down"></i>
                                 <span class="profile-role">Marketing</span>
                             </a>
@@ -177,9 +177,7 @@
                                 </p:submenu>
                             </p:submenu>
                         </p:submenu>
-                        <ui:remove>
-                        <p:menuitem id="om_doc" value="Documentation" icon="fa fa-fw fa-book" outcome="/docs"/>
-                        </ui:remove>
+                        <p:menuitem id="om_logout" value="Salir" actionListener="#{logoutBean.submit()}" icon="fa fa-fw fa-sign-out" ajax="false"/>
                     </pu:menu>
                 </div>
             </div>

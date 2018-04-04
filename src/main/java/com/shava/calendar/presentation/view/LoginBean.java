@@ -5,7 +5,9 @@
  */
 package com.shava.calendar.presentation.view;
 
+import com.shava.calendar.authorization.boundary.UserResource;
 import com.shava.calendar.authorization.entity.Login;
+import com.shava.calendar.authorization.entity.UserCalendar;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import javax.security.enterprise.AuthenticationStatus;
@@ -15,6 +17,7 @@ import javax.security.enterprise.credential.Credential;
 import javax.security.enterprise.credential.Password;
 import javax.security.enterprise.credential.UsernamePasswordCredential;
 import org.omnifaces.cdi.Param;
+import org.omnifaces.util.Beans;
 import org.omnifaces.util.Faces;
 import static org.omnifaces.util.Faces.validationFailed;
 import static org.omnifaces.util.Messages.addGlobalError;
@@ -36,6 +39,9 @@ public class LoginBean {
     @Inject
     SecurityContext securityContext;
     
+    @Inject
+    UserResource userResource;
+    
     public void submit() {
         Credential credential = new UsernamePasswordCredential(login.getUsername(), new Password(login.getPassword()));
 
@@ -49,6 +55,11 @@ public class LoginBean {
                         .rememberMe(login.isRemember())
         );
         if (AuthenticationStatus.SUCCESS.equals(status)) {
+            UserCalendar user = userResource.getUserWithEmail(login.getUsername()).get(0);
+            UserInfo userInfo = Beans.getInstance(UserInfo.class,true);
+            userInfo.setFullName(user.getFirstName()+" "+user.getLastName());
+            userInfo.setUserId(user.getUserCalendarId());
+            userInfo.setUserName(user.getEmail());
             Faces.redirect("dashboard.xhtml");
         } else if (AuthenticationStatus.SEND_FAILURE.equals(status)) {
             addGlobalError("auth.message.error.failure");
