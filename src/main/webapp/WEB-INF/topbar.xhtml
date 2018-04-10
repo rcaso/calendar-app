@@ -10,13 +10,12 @@
         <div class="topbar-left">            
             <p:graphicImage name="images/logo.png" library="avalon-layout" styleClass="topbar-logo"/>
         </div>
-        
         <div class="topbar-right">
             <a id="menu-button" href="#">
                 <i class="fa fa-angle-left"></i>
             </a>
-            
-            <a id="topbar-menu-button" href="#">
+
+            <a id="topbar-menu-button" href="#">angle
                 <i class="fa fa-bars"></i>
             </a>
             <ul class="topbar-items fadeInDown animated">
@@ -27,7 +26,7 @@
                             <span class="topbar-item-name">Isabel Lopez</span>
                             <span class="topbar-item-role">Marketing</span>
                         </a>
-                        
+
                         <ul class="layout-menu animated">
                             <li role="menuitem">
                                 <a href="#">
@@ -56,6 +55,7 @@
                         </ul>
                     </li>
                 </ui:fragment>
+                <ui:remove>
                 <li>
                     <a href="#">
                         <i class="topbar-icon fa fa-fw fa-cog"></i>
@@ -127,6 +127,7 @@
                         </li>
                     </ul>
                 </li>
+                </ui:remove>
                 <li>
                     <a href="#">
                         <i class="topbar-icon fa fa-fw fa-bell-o"></i>
@@ -160,10 +161,34 @@
                         </li>
                     </ul>
                 </li>
+                <ui:remove>
                 <li class="search-item">
                     <div class="topbar-search">
                         <input type="text" placeholder="Search" />
                         <i class="fa fa-search" />
+                    </div>
+                </li>
+                </ui:remove>
+                <li>
+                    <a class="customMenu">
+                        <i class="topbar-icon fa fa-fw fa-pencil-square-o">
+                        <span class="topbar-item-name">Contactos</span>
+                        </i>
+                    </a>
+                    <div class="layout-quickmenu-tooltip">
+                        <div class="layout-quickmenu-tooltip-arrow"></div>
+                        <div class="layout-quickmenu-tooltip-text">Contactos</div>
+                    </div>
+                </li>
+                <li>
+                    <h:link outcome="empty" class="customMenu">
+                        <i class="topbar-icon fa fa-fw fa-calendar">
+                        <span class="topbar-item-name">Agregar Evento</span>
+                        </i>
+                    </h:link>
+                    <div class="layout-quickmenu-tooltip">
+                        <div class="layout-quickmenu-tooltip-arrow"></div>
+                        <div class="layout-quickmenu-tooltip-text">Agregar Evento</div>
                     </div>
                 </li>
             </ul>

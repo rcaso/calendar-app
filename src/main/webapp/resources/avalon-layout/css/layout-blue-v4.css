@@ -2074,3 +2074,40 @@ body {
   .layout-wrapper.layout-rtl .topbar .topbar-right #topbar-menu-button {
     left: 10px; } }
 /* Add your customizations of layout here */
+.layout-wrapper .topbar .topbar-right .topbar-items .layout-quickmenu-tooltip {
+    display: none;
+    padding: 0 5px;
+    position: absolute;
+    top: 45px;
+    left: -55px;
+    line-height: 1;
+    width: 128px;
+}
+.layout-wrapper .topbar .topbar-right .topbar-items li a:hover + .layout-quickmenu-tooltip {
+    display: block; }
+
+.layout-wrapper .topbar .topbar-right .topbar-items .layout-quickmenu-tooltip .layout-quickmenu-tooltip-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    top: 0;
+    left: 50%;
+    margin-top: -5px;
+    margin-left: -5px;
+    border-width: 0 5px 5px 5px;
+    border-bottom-color: #212121;
+}
+.layout-wrapper .topbar .topbar-right .topbar-items .layout-quickmenu-tooltip .layout-quickmenu-tooltip-text {
+    padding: 6px 8px;
+    font-weight: 600;
+    background-color: #212121;
+    color: #c8c8c8;
+    min-width: 75px;
+    white-space: nowrap;
+    text-align: center;
+    -webkit-box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    -moz-box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+}

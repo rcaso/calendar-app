@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Evento</ui:define>
+    <ui:define name="content">
+        <h:form>
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <h1>Registrar usuario nuevo</h1>
+                        <p:tooltip />
+                        <p:messages showDetail="false" globalOnly="true" closable="true" />
+                        <p:panelGrid columns="6" columnClasses="ui-grid-col-2,ui-grid-col-3,ui-grid-col-1,ui-grid-col-2,ui-grid-col-3,ui-grid-col-1" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                            <p:outputLabel for="name" value="Nombres"/>
+                            <p:inputText id="name" value="#{registerBean.userCalendar.firstName}" required="true"/>
+                            <p:message for="name" display="tooltip" />
+                            <p:outputLabel for="fullname" value="Apellidos" />
+                            <p:inputText id="fullname" value="#{registerBean.userCalendar.lastName}" required="true"/>
+                            <p:message for="fullname" display="tooltip" />
+                            <p:outputLabel for="email" value="Email"/>
+                            <p:inputText id="email" value="#{registerBean.userCalendar.email}" required="true"/>
+                            <p:message for="email" display="tooltip" />
+                            <p:outputLabel for="mobile" value="Celular" />
+                            <p:inputText id="mobile" value="#{registerBean.userCalendar.mobileNumber}"/>
+                            <p:message for="mobile" display="tooltip" />
+                            <p:outputLabel for="password" value="Password"/>
+                            <p:password id="password" value="#{registerBean.userCalendar.userPassword}" required="true"/>
+                            <p:message for="password" display="tooltip" />
+                            <p:outputLabel for="passwordcheck" value="Confirmar Password" />
+                            <p:password id="passwordcheck" required="true"/>
+                            <h:panelGroup>
+					<p:message for="passwordcheck" display="tooltip" />
+					<o:validateEqual id="equal" components="password passwordcheck"
+						message="El password no es igual" showMessageFor="password"/>
+			   </h:panelGroup>
+                        </p:panelGrid>
+                        <p:commandButton id="submit" action="#{registerBean.registerUser()}" value="Guardar" style="display:inline-block;margin-top:5px" ajax="false" styleClass="GreenButton"/>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

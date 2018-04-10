@@ -22,7 +22,7 @@ PrimeFaces.widget.Avalon = PrimeFaces.widget.BaseWidget.extend({
         this.topbarMenuClick = false;
         this.menuButtonClick = false;
         this.isMobileDev = this.isMobileDevice();
-
+        this.customMenu = $('.customMenu');
         this._bindEvents();
         
         if(!this.wrapper.hasClass('menu-layout-horizontal')) {
@@ -229,6 +229,8 @@ PrimeFaces.widget.Avalon = PrimeFaces.widget.BaseWidget.extend({
             
             e.preventDefault();         
         });
+        
+        this.customMenu.off('click.topbarLink');
         
         $this.topbarItems.children('.search-item').on('click', function(e) {
             $this.topbarLinkClick = true;
