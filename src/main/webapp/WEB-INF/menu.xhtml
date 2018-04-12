@@ -13,10 +13,12 @@
                     <ui:fragment rendered="true">
                         <div class="profile">
                             <a id="profile-options" href="#">
-                                <p:graphicImage name="images/avatar.png" library="avalon-layout" styleClass="profile-image" style="border: 0 none"/>
+                                <p:graphicImage rendered="false" name="images/avatar.png" library="avalon-layout" styleClass="profile-image" style="border: 0 none"/>
                                 <span class="profile-name">#{userInfo.fullName}</span>
                                 <i class="fa fa-fw fa-caret-down"></i>
+                                <ui:remove>
                                 <span class="profile-role">Marketing</span>
+                                </ui:remove>
                             </a>
                         </div>
 

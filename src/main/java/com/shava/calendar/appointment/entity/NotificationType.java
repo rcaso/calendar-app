@@ -12,6 +12,6 @@ package com.shava.calendar.appointment.entity;
 public enum NotificationType {
     WEB,
     EMAIL,
-    MOBIL,
+    MOBILE,
     ALL
 }

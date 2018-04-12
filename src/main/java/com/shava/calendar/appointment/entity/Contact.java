@@ -30,7 +30,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "contact")
 @NamedQuery(name = "Contact.findAll", query = "SELECT c FROM Contact c")
-@NamedQuery(name ="Contact.findByName", query = "select c from Contact c where c.fullName like :name ")
+@NamedQuery(name ="Contact.findByName", query = "select c from Contact c where c.fullName like :name and c.userCalendarId= :user ")
 public class Contact extends  BaseEntity implements Serializable {
     
     public static final String FIND_BY_NAME = "Contact.findByName";

@@ -40,8 +40,9 @@ public class ContactResource {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Contact> getContactsByName(@QueryParam("name") String name){
-        return (List<Contact>)crudService.findWithNamedQuery(Contact.FIND_BY_NAME,QueryParameter.with("name", name+"%").parameters());
+    public List<Contact> getContactsByName(@QueryParam("user") Integer user,@QueryParam("name") String name){
+        return (List<Contact>)crudService.findWithNamedQuery(Contact.FIND_BY_NAME,QueryParameter.with("name","%"+name+"%")
+                .and("user",user).parameters());
     }
     
     @PUT
