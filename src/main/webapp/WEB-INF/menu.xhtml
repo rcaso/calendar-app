@@ -157,7 +157,7 @@
                             <p:menuitem id="om_404" value="404 Page" icon="fa fa-fw fa-times" outcome="/404" target="_blank"/>
                             <p:menuitem id="om_access" value="Access Denied" icon="fa fa-fw fa-exclamation-triangle" outcome="/access" target="_blank"/>
                         </p:submenu>
-                        </ui:remove>
+                        
                         <p:submenu id="om_hierarchy" label="Menu Hierarchy" icon="fa fa-fw fa-gg">
                             <p:submenu id="om_sm1" label="Submenu 1" icon="fa fa-fw fa-sign-in">
                                 <p:submenu id="om_sm11" label="Submenu 1.1" icon="fa fa-fw fa-sign-in">
@@ -179,6 +179,8 @@
                                 </p:submenu>
                             </p:submenu>
                         </p:submenu>
+                        </ui:remove>
+                        <p:menuitem id="om_dashboard" value="Calendario" icon="fa fa-fw fa-home" outcome="/dashboard"/>
                         <p:menuitem id="om_logout" value="Salir" actionListener="#{logoutBean.submit()}" icon="fa fa-fw fa-sign-out" ajax="false"/>
                     </pu:menu>
                 </div>

@@ -8,50 +8,62 @@
     <ui:define name="title">Evento</ui:define>
     <ui:define name="content">
         <h:form id="schedule">
-            <div class="ui-g">
-                <div class="ui-g-12">
-                    <div class="card card-w-title">
-                        <h1>Evento</h1>
-                        <p:messages showDetail="false" globalOnly="false" closable="true" id="messageerror"/>
-                        <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
-                            <p:outputLabel for="description" value="Descripcion"/>
-                            <p:inputText id="description" value="#{appointmentBean.appointment.description}"/>
-                            <p:outputLabel for="contact" value="Contacto"/>
-                            <p:autoComplete id="contact" value="#{appointmentBean.appointment.contact}" var="contacto"
-                                            itemLabel="#{contacto.fullName}" itemValue="#{contacto.contactId}" 
-                                            forceSelection="true" completeMethod="#{appointmentBean.completeContact}"/>
-                            <p:outputLabel for="notification" value="Enviar notificación"/>
-                            <p:selectOneMenu id="notification" value="#{appointmentBean.appointment.activedNotification}">
-                                <p:ajax update="@form" process="@form"/>
-                                <f:selectItem itemLabel="No" itemValue="NO"/>
-                                <f:selectItem itemLabel="Si" itemValue="YES"/>
-                            </p:selectOneMenu>
-                            <p:outputLabel id="notificationTypeLabel" for="notificationType" rendered="#{appointmentBean.appointment.activedNotification eq 'YES'}" value="Tipo de notificación"/>
-                            <p:selectOneMenu id="notificationType" disabled="#{appointmentBean.appointment.activedNotification eq 'NO'}" rendered="#{appointmentBean.appointment.activedNotification eq 'YES'}" value="#{appointmentBean.appointment.notificationType}">
-                                <f:selectItem itemLabel="Web" itemValue="WEB"/>
-                                <f:selectItem itemLabel="Email" itemValue="EMAIL"/>
-                                <f:selectItem itemLabel="Celular" itemValue="MOBILE"/>
-                                <f:selectItem itemLabel="Todos" itemValue="ALL"/>
-                            </p:selectOneMenu>
-                        </p:panelGrid>
-                        <p:commandButton action="#{appointmentBean.submit}" ajax="false" value="Guardar" style="display:inline-block;margin-top:5px"/>
-                    </div>
-                    <div class="card">
-                        <p:panelGrid columns="4" layout="grid">
-                            <p:calendar id="appDate" value="#{appointmentBean.date}" showOn="button" placeholder="Fecha" timeZone="#{userInfo.timeZone}" pattern="dd/MM/yyyy" >
-                                <f:convertDateTime type="localDate" pattern="dd/MM/yyyy"/>
-                            </p:calendar>
-                            <p:selectOneMenu id="beginHour" value="#{appointmentBean.beginHour}" placeholder="Inicio">
-                                <f:selectItems itemLabel="#{time}" itemValue="#{time}" value="#{appointmentBean.hours}" var="time"/>
-                                <p:ajax update="endHour" process="@this"/>
-                            </p:selectOneMenu>
-                            <p:selectOneMenu id="endHour" value="#{appointmentBean.endHour}" placeholder="Fin">
-                                <f:selectItems itemLabel="#{time}" itemValue="#{time}" value="#{appointmentBean.hours}" var="time"/>
-                            </p:selectOneMenu>
-                            <p:commandButton value="Agregar fecha" actionListener="#{appointmentBean.registerSchedule}" process="@form" update="dtDates messageerror"/>
-                        </p:panelGrid>
-                    </div>
-                    <div class="card card-w-title">
+            <div class="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card card-w-title">
+                            <h1>Evento</h1>
+                            <p:tooltip/>
+                            <p:messages showDetail="false" globalOnly="true" closable="true" id="messageerror"/>
+                            <p:panelGrid id="appointment" columns="3" columnClasses="ui-grid-col-4,ui-grid-col-7,ui-grid-col-1" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                <p:outputLabel for="description" value="Descripcion"/>
+                                <p:inputText id="description" value="#{appointmentBean.appointment.description}" required="true"/>
+                                <p:message for="description" display="tooltip" />
+                                <p:outputLabel for="contact" value="Contacto"/>
+                                <p:autoComplete id="contact" value="#{appointmentBean.appointment.contact}" var="contactoItem"
+                                                itemLabel="#{contactoItem.fullName}" itemValue="#{contactoItem.contactId}" 
+                                                forceSelection="true" completeMethod="#{appointmentBean.completeContact}"/>
+                                <p:message for="contact" display="tooltip" />
+                                <p:outputLabel for="notification" value="Enviar notificación"/>
+                                <p:selectOneMenu id="notification" value="#{appointmentBean.appointment.activedNotification}">
+                                    <p:ajax update="@form" process="@this"/>
+                                    <f:selectItem itemLabel="No" itemValue="NO"/>
+                                    <f:selectItem itemLabel="Si" itemValue="YES"/>
+                                </p:selectOneMenu>
+                                <p:message for="notification" display="tooltip" />
+                                <p:outputLabel id="notificationTypeLabel" for="notificationType" rendered="#{appointmentBean.appointment.activedNotification eq 'YES'}" value="Tipo de notificación"/>
+                                <p:selectOneMenu id="notificationType" disabled="#{appointmentBean.appointment.activedNotification eq 'NO'}" rendered="#{appointmentBean.appointment.activedNotification eq 'YES'}" value="#{appointmentBean.appointment.notificationType}">
+                                    <f:selectItem itemLabel="Web" itemValue="WEB"/>
+                                    <f:selectItem itemLabel="Email" itemValue="EMAIL"/>
+                                    <f:selectItem itemLabel="Celular" itemValue="MOBILE"/>
+                                    <f:selectItem itemLabel="Todos" itemValue="ALL"/>
+                                </p:selectOneMenu>
+                                <p:message for="notificationType" display="tooltip" />
+                            </p:panelGrid>
+                            <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank lesspad">
+                                <p:spacer/>
+                                <p:commandButton action="#{appointmentBean.submit}" process="@form" update="appointment messageerror" value="Guardar" style="display:inline-block;margin-top:5px"/>
+                                <p:spacer/>
+                            </p:panelGrid>
+                            
+                        </div>
+                        <div class="card">
+                            <p:panelGrid id="rangeDates" columns="5" layout="grid">
+                                <p:calendar id="appDate" value="#{appointmentBean.date}" required="true" showOn="button" placeholder="Fecha" timeZone="#{userInfo.timeZone}" pattern="dd/MM/yyyy" >
+                                    <f:convertDateTime type="localDate" pattern="dd/MM/yyyy"/>
+                                </p:calendar>
+                                <p:message for="appDate" display="tooltip"/>
+                                <p:selectOneMenu id="beginHour" value="#{appointmentBean.beginHour}" placeholder="Inicio">
+                                    <f:selectItems itemLabel="#{time}" itemValue="#{time}" value="#{appointmentBean.hours}" var="time"/>
+                                    <p:ajax update="endHour" process="@this" listener="#{appointmentBean.updateEndTime}"/>
+                                </p:selectOneMenu>
+                                <p:selectOneMenu id="endHour" value="#{appointmentBean.endHour}" placeholder="Fin">
+                                    <f:selectItems itemLabel="#{time}" itemValue="#{time}" value="#{appointmentBean.hours}" var="time"/>
+                                </p:selectOneMenu>
+                                <p:commandButton value="Agregar fecha" actionListener="#{appointmentBean.registerSchedule}" process="rangeDates" update="dtDates rangeDates messageerror"/>
+                            </p:panelGrid>
+                        </div>
+                        <div class="card card-w-title">
                             <h1>Fechas Registradas</h1>
                             <p:dataTable var="dateSelected" id="dtDates" value="#{appointmentBean.appointment.dates}" reflow="true">
                                 <p:column headerText="Inicio">
@@ -65,9 +77,15 @@
                                         <f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy HH:mm"/>
                                     </h:outputText>
                                 </p:column>
+                                <p:column style="width:32px;">
+                                    <p:commandButton id="btnDelete" actionListener="#{appointmentBean.deleteDate}" process="@this" update="schedule:dtDates" icon="ui-icon-search" title="Eliminar">
+                                        <f:setPropertyActionListener value="#{dateSelected}" target="#{appointmentBean.selectedDate}" />
+                                    </p:commandButton>
+                                </p:column>
                             </p:dataTable>
+                        </div>
+
                     </div>
- 
                 </div>
             </div>
         </h:form>

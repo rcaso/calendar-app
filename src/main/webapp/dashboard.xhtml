@@ -33,13 +33,50 @@
         <f:metadata>
             <f:viewAction action="#{calendarBean.loadSchedule()}" />
         </f:metadata>
-        <h:form>
+        <h:form id="dashboard">
             <div class="ui-g">
                 <div class="ui-g-12">
                     <p:panel header="Calendario" style="height:100%">
                         <p:schedule id="cita" value="#{calendarBean.model}" locale="es" timeZone="#{userInfo.timeZone}" draggable="false" 
-                                    resizable="false" view="month" leftHeaderTemplate="prev,next"/>
+                                    resizable="false" view="month" leftHeaderTemplate="prev,next">
+                            <p:ajax event="dateSelect" listener="#{calendarBean.onDateSelect}"
+					update="dialEvent" oncomplete="PF('eventDialog').show();" />
+				<p:ajax event="eventSelect" listener="#{calendarBean.onEventSelect}"
+					update="dialEvent" oncomplete="PF('eventDialog').show();" />
+                        
+                        </p:schedule>
                     </p:panel>
+                    <p:dialog id="dialEvent" widgetVar="eventDialog" header="Detalle" showEffect="clip" hideEffect="clip" responsive="true" modal="true">
+                        <p:outputPanel id="dateModal" rendered="#{not empty calendarBean.scheduleSelected}" style="text-align:center;">
+                            <p:panelGrid id="eventDetails" columns="2" columnClasses="label,value">
+                                <p:outputLabel for="title" value="Actividad:" />
+                                <p:inputText id="title" value="#{calendarBean.scheduleSelected.description}" disabled="true"/>
+
+                                <p:outputLabel for="from" value="Incio:" />
+                                <p:calendar id="from" value="#{calendarBean.scheduleSelected.beginDate}" disabled="true" timeZone="#{userInfo.timeZone}" pattern="dd/MM/yyyy HH:mm">
+                                    <f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy HH:mm"/>
+                                </p:calendar>
+
+                                <p:outputLabel for="to" value="Termino:" />
+                                <p:calendar id="to" value="#{calendarBean.scheduleSelected.endDate}" disabled="true"  timeZone="#{userInfo.timeZone}" pattern="dd/MM/yyyy HH:mm">
+                                    <f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy HH:mm"/>
+                                </p:calendar>
+                                
+                                <p:outputLabel for="contact" value="Contacto"/>
+                                <p:selectOneMenu id="contact" disabled="true" value="#{calendarBean.scheduleSelected.contactId}">
+                                    <f:selectItems value="#{calendarBean.contacts}" var="contact" itemLabel="#{contact.fullName}" itemValue="#{contact.contactId}"/>
+                                </p:selectOneMenu>
+                                
+                                <p:outputLabel for="notification" value="Enviar notificación"/>
+                                <h:outputText id="notification" value="#{calendarBean.scheduleSelected.indNotification}"/>
+                                
+                                <p:outputLabel id="notificationTypeLabel" for="notificationType" value="Tipo de notificación"/>
+                                <h:outputText id="notificationType" value="#{calendarBean.scheduleSelected.notificationType}"/>
+                                
+                                
+                            </p:panelGrid>
+                        </p:outputPanel>
+                    </p:dialog> 
                 </div>
             </div>
         </h:form>

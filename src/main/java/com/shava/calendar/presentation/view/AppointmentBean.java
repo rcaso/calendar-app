@@ -18,11 +18,14 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.omnifaces.util.Faces;
+import static org.omnifaces.util.Faces.validationFailed;
+import static org.omnifaces.util.Messages.addGlobalError;
 
 /**
  *
@@ -50,25 +53,55 @@ public class AppointmentBean implements Serializable {
     private String endHour;
 
     private List<String> hours;
+    
+    private HashMap<String,LocalDateTime> selectedDate;
 
     public List<Contact> completeContact(String name) {
         return contactResource.getContactsByName(userInfo.getUserId(), name);
     }
-    
+
     @UserLogin
-    public void submit(){
+    public void submit() {
         appointment.setUser(userInfo.getUserId());
         scheduleResource.saveAppointments(appointment);
         Faces.redirect("dashboard.xhtml");
     }
 
+    public void updateEndTime() {
+        LocalTime beginTime = LocalTime.parse(getBeginHour());
+        LocalTime endTime = beginTime.plusMinutes(30);
+        endHour = endTime.toString();
+    }
+
     public void registerSchedule() {
-        LocalDateTime begin = LocalDateTime.of(getDate(), LocalTime.parse(getBeginHour() + ":00"));
-        LocalDateTime end = LocalDateTime.of(getDate(), LocalTime.parse(getEndHour() + ":00"));
-        HashMap<String, LocalDateTime> range = new HashMap<>();
-        range.put("beginDate", begin);
-        range.put("endDate", end);
-        appointment.getDates().add(range);
+        LocalTime beginTime = LocalTime.parse(getBeginHour());
+        LocalTime endTime = LocalTime.parse(getEndHour());
+        if (endTime.isBefore(beginTime)) {
+            addGlobalError("Error Hora final no puede ser a la hora de inicio");
+            validationFailed();
+        } else {
+            LocalDateTime begin = LocalDateTime.of(getDate(), beginTime);
+            LocalDateTime end = LocalDateTime.of(getDate(), endTime);
+            HashMap<String, LocalDateTime> range = new HashMap<>();
+            range.put("beginDate", begin);
+            range.put("endDate", end);
+            appointment.getDates().add(range);
+        }
+    }
+    
+    public void deleteDate(){
+        if(selectedDate!=null){
+            HashMap<String,LocalDateTime> datesFiltered =
+        appointment.getDates().stream().filter(row -> {
+          return (selectedDate.get("beginDate").isEqual(row.get("beginDate")) &&
+          selectedDate.get("endDate").isEqual(row.get("endDate")));
+        }).findAny().orElse(null);
+        if(datesFiltered != null){
+            appointment.getDates().remove(datesFiltered);
+        }
+        selectedDate = null;
+        }
+        
     }
 
     @PostConstruct
@@ -155,6 +188,20 @@ public class AppointmentBean implements Serializable {
      */
     public void setHours(List<String> hours) {
         this.hours = hours;
+    }
+
+    /**
+     * @return the selectedDate
+     */
+    public HashMap<String,LocalDateTime> getSelectedDate() {
+        return selectedDate;
+    }
+
+    /**
+     * @param selectedDate the selectedDate to set
+     */
+    public void setSelectedDate(HashMap<String,LocalDateTime> selectedDate) {
+        this.selectedDate = selectedDate;
     }
 
 }

@@ -1,0 +1,82 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <f:metadata>
+        <f:viewAction action="#{contactBean.loadContacts()}"/>
+    </f:metadata>
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-fluid">
+                <div class="ui-g-12">
+                    <div class="card card-w-title">
+                        <h:form id="contactForm">
+                            <h1>Contactos</h1>
+                            <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank lesspad">
+                                <p:commandButton style="text-align:center" immediate="true" process="@this" title="Crear nuevo contacto" 
+                                                 value="Nuevo" actionListener="#{contactBean.newContact}" 
+                                                 oncomplete="PF('contactPopup').show()"  update="contactForm:contactModal">
+                                    <p:resetInput target="contactForm:contactModal" />
+                                </p:commandButton>
+                                <p:spacer/>
+                                <p:spacer/>
+                            </p:panelGrid>
+                            
+                            <p:dataTable id="contactsTable" value="#{contactBean.usersContacts}" var="contact" rows="15" reflow="true">
+                                <p:column headerText="Nombres">
+                                    <h:outputText value="#{contact.fullName}"/>
+                                </p:column>
+                                <p:column headerText="Email">
+                                    <h:outputText value="#{contact.email}"/>
+                                </p:column>
+                                <p:column headerText="Celular">
+                                    <h:outputText value="#{contact.mobileNumber}"/>
+                                </p:column>
+                                <p:column style="width:32px;">
+                                    <p:commandButton id="btnEdit" process="@this" update="contactForm:contactModal" oncomplete="PF('contactPopup').show()" icon="ui-icon-search" title="Editar">
+                                        <f:setPropertyActionListener value="#{contact}" target="#{contactBean.contact}" />
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                            <p:dialog header="#{contactBean.contact.contactId!=null?'Modificar Contacto':'Registrar Contacto'}" widgetVar="contactPopup" responsive="true" modal="true" showEffect="blind" hideEffect="explode" resizable="false">
+                                <p:outputPanel id="contactModal" style="text-align:center;">
+                                    <p:panelGrid  columns="3" rendered="#{not empty contactBean.contact}" columnClasses="label,value">
+                                        <f:facet name="header">
+                                            <p:tooltip/>
+                                        </f:facet>
+                                        <p:outputLabel for="fullName" value="Nombres:" />
+                                        <p:inputText id="fullName" value="#{contactBean.contact.fullName}" required="true" />
+                                        <p:message for="fullName" display="tooltip" />
+                                        <p:outputLabel for="email" value="Email" />
+                                        <h:inputText id="email" value="#{contactBean.contact.email}" />
+                                        <p:message for="email" display="tooltip" />
+                                        <p:outputLabel for="mobile" value="Celular:" />
+                                        <p:inputText id="mobile" value="#{contactBean.contact.mobileNumber}"/>
+                                        <p:message for="mobile" display="tooltip" />
+                                        <f:facet name="footer">
+                                            <p:commandButton value="Guardar" update="contactModal" process="contactModal" oncomplete="handleLoginRequest(xhr, status, args)"
+                                                             actionListener="#{contactBean.saveContact()}"/>
+                                        </f:facet>
+                                    </p:panelGrid>
+                                </p:outputPanel>
+                            </p:dialog>
+                        </h:form>
+                        <script type="text/javascript">
+                            function handleLoginRequest(xhr, status, args) {
+                                if (args.validationFailed) {
+                                    PF('contactPopup').jq.effect("shake", {times: 5}, 100);
+                                } else {
+                                    PF('contactPopup').hide();
+                                }
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

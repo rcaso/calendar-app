@@ -5,19 +5,15 @@
  */
 package com.shava.calendar.appointment.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shava.calendar.entity.BaseEntity;
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -29,11 +25,12 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "contact")
-@NamedQuery(name = "Contact.findAll", query = "SELECT c FROM Contact c")
-@NamedQuery(name ="Contact.findByName", query = "select c from Contact c where c.fullName like :name and c.userCalendarId= :user ")
+@NamedQuery(name = "Contact.findAll", query = "SELECT c FROM Contact c where c.userCalendarId= :user order by c.fullName")
+@NamedQuery(name ="Contact.findByName", query = "select c from Contact c where UPPER(c.fullName) like UPPER(:name) and c.userCalendarId= :user ")
 public class Contact extends  BaseEntity implements Serializable {
     
     public static final String FIND_BY_NAME = "Contact.findByName";
+    public static final String FIND_ALL = "Contact.findAll";
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -58,10 +55,6 @@ public class Contact extends  BaseEntity implements Serializable {
     @Column(name = "user_calendar_id")
     private int userCalendarId;
     
-    @JsonIgnore
-    @OneToMany(mappedBy = "contactId")
-    private List<Schedule> scheduleList;
-
     public Contact() {
     }
 
@@ -113,14 +106,6 @@ public class Contact extends  BaseEntity implements Serializable {
 
     public void setUserCalendarId(int userCalendarId) {
         this.userCalendarId = userCalendarId;
-    }
-
-    public List<Schedule> getScheduleList() {
-        return scheduleList;
-    }
-
-    public void setScheduleList(List<Schedule> scheduleList) {
-        this.scheduleList = scheduleList;
     }
 
     @Override

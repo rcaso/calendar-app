@@ -16,6 +16,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -44,6 +45,14 @@ public class ContactResource {
         return (List<Contact>)crudService.findWithNamedQuery(Contact.FIND_BY_NAME,QueryParameter.with("name","%"+name+"%")
                 .and("user",user).parameters());
     }
+    
+    @Path("/{user}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Contact> getAllContacts(@PathParam("user") Integer userId){
+        return crudService.findWithNamedQuery(Contact.FIND_ALL,QueryParameter.with("user",userId).parameters());
+    }
+    
     
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
