@@ -9,6 +9,7 @@ import com.shava.calendar.appointment.boundary.ContactResource;
 import com.shava.calendar.appointment.boundary.ScheduleResource;
 import com.shava.calendar.appointment.entity.Appointment;
 import com.shava.calendar.appointment.entity.Contact;
+import com.shava.calendar.appointment.entity.Schedule;
 import com.shava.calendar.contextholder.UserLogin;
 import java.io.Serializable;
 import java.time.Duration;
@@ -18,11 +19,11 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.omnifaces.cdi.Param;
 import org.omnifaces.util.Faces;
 import static org.omnifaces.util.Faces.validationFailed;
 import static org.omnifaces.util.Messages.addGlobalError;
@@ -43,6 +44,10 @@ public class AppointmentBean implements Serializable {
 
     @Inject
     UserInfo userInfo;
+    
+    @Inject
+    @Param(name = "scheduleId") // Defined in @LoginToContinue of SecurityFormAuthenticationMechanism
+    private Integer scheduleId;
 
     private Appointment appointment;
 
@@ -55,6 +60,15 @@ public class AppointmentBean implements Serializable {
     private List<String> hours;
     
     private HashMap<String,LocalDateTime> selectedDate;
+    
+    private Schedule schedule;
+    
+    private List<Contact> contacts;
+    
+    public void loadSchedule(){
+        schedule = scheduleResource.getSchedule(scheduleId);
+        contacts = contactResource.getAllContacts(userInfo.getUserId());
+    }
 
     public List<Contact> completeContact(String name) {
         return contactResource.getContactsByName(userInfo.getUserId(), name);
@@ -66,7 +80,13 @@ public class AppointmentBean implements Serializable {
         scheduleResource.saveAppointments(appointment);
         Faces.redirect("dashboard.xhtml");
     }
-
+    
+    @UserLogin
+    public void update(){
+        scheduleResource.updateSchedule(schedule);
+        Faces.redirect("dashboard.xhtml");
+    }
+    
     public void updateEndTime() {
         LocalTime beginTime = LocalTime.parse(getBeginHour());
         LocalTime endTime = beginTime.plusMinutes(30);
@@ -112,12 +132,15 @@ public class AppointmentBean implements Serializable {
         int gapInMinutes = 30;  // Define your span-of-time.
         int loops = ((int) Duration.ofHours(24).toMinutes() / gapInMinutes);
         List<LocalTime> times = new ArrayList<>(loops);
-        LocalTime time = LocalTime.MIN;  // '00:00'
+        LocalTime time = LocalTime.of(6, 0);  // '00:00'
         for (int i = 1; i <= loops; i++) {
             hours.add(time.toString());
             // Set up next loop.
             time = time.plusMinutes(gapInMinutes);
         }
+        //initial hour
+        beginHour ="08:00";
+        endHour = "08:30";
     }
 
     /**
@@ -202,6 +225,34 @@ public class AppointmentBean implements Serializable {
      */
     public void setSelectedDate(HashMap<String,LocalDateTime> selectedDate) {
         this.selectedDate = selectedDate;
+    }
+
+    /**
+     * @return the schedule
+     */
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    /**
+     * @param schedule the schedule to set
+     */
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
+    }
+
+    /**
+     * @return the contacts
+     */
+    public List<Contact> getContacts() {
+        return contacts;
+    }
+
+    /**
+     * @param contacts the contacts to set
+     */
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
     }
 
 }

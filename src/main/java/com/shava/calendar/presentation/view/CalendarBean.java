@@ -55,6 +55,11 @@ public class CalendarBean implements Serializable {
         model = createSchedule(schedules);
         contacts = contactResource.getAllContacts(userInfo.getUserId());
     }
+    
+    public void deleteShedule(){
+        schedulerResource.deleteSchedule(scheduleSelected.getScheduleId());
+        loadSchedule();
+    }
 
     public void onEventSelect(SelectEvent selectEvent) {
         event = (DefaultScheduleEvent) selectEvent.getObject();

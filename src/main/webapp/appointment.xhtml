@@ -78,7 +78,7 @@
                                     </h:outputText>
                                 </p:column>
                                 <p:column style="width:32px;">
-                                    <p:commandButton id="btnDelete" actionListener="#{appointmentBean.deleteDate}" process="@this" update="schedule:dtDates" icon="ui-icon-search" title="Eliminar">
+                                    <p:commandButton id="btnDelete" actionListener="#{appointmentBean.deleteDate}" process="@this" update="schedule:dtDates" icon="fa fa-fw fa-trash-o" title="Eliminar">
                                         <f:setPropertyActionListener value="#{dateSelected}" target="#{appointmentBean.selectedDate}" />
                                     </p:commandButton>
                                 </p:column>

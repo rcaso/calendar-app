@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Evento</ui:define>
+    <ui:define name="content">
+        <f:metadata>
+            <f:importConstants type="com.shava.calendar.appointment.entity.ActivedType"/>
+            <f:viewAction action="#{appointmentBean.loadSchedule}" />
+        </f:metadata>
+        <h:form id="schedule">
+            <div class="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card card-w-title">
+                            <h1>Evento</h1>
+                            <p:tooltip/>
+                            <p:messages showDetail="false" globalOnly="true" closable="true" id="messageerror"/>
+                            <p:panelGrid id="appointment" columns="3" columnClasses="ui-grid-col-4,ui-grid-col-7,ui-grid-col-1" layout="grid" styleClass="ui-panelgrid-blank form-group" style="border:0px none; background-color:transparent;">
+                                <p:outputLabel for="description" value="Descripcion"/>
+                                <p:inputText id="description" value="#{appointmentBean.schedule.description}" required="true"/>
+                                <p:message for="description" display="tooltip" />
+                                <p:outputLabel for="contact" value="Contacto"/>
+                                <p:selectOneMenu id="contact" value="#{appointmentBean.schedule.contactId}">
+                                    <f:selectItems value="#{appointmentBean.contacts}" var="contact" itemLabel="#{contact.fullName}" itemValue="#{contact.contactId}"/>
+                                </p:selectOneMenu>
+                                <p:message for="contact" display="tooltip" />
+                                <p:outputLabel for="notification" value="Enviar notificación"/>
+                                <p:selectOneMenu id="notification" value="#{appointmentBean.schedule.indNotification}">
+                                    <p:ajax update="@form" process="@this"/>
+                                    <f:selectItem itemLabel="No" itemValue="NO"/>
+                                    <f:selectItem itemLabel="Si" itemValue="YES"/>
+                                </p:selectOneMenu>
+                                <p:message for="notification" rendered="#{appointmentBean.schedule.indNotification eq ActivedType.YES}" display="tooltip" />
+                                <p:outputLabel id="notificationTypeLabel" for="notificationType" rendered="#{appointmentBean.schedule.indNotification eq ActivedType.YES}" value="Tipo de notificación"/>
+                                <p:selectOneMenu id="notificationType" disabled="#{appointmentBean.schedule.indNotification eq ActivedType.NO}" rendered="#{appointmentBean.schedule.indNotification eq ActivedType.YES}" value="#{appointmentBean.schedule.notificationType}">
+                                    <f:selectItem itemLabel="Web" itemValue="WEB"/>
+                                    <f:selectItem itemLabel="Email" itemValue="EMAIL"/>
+                                    <f:selectItem itemLabel="Celular" itemValue="MOBILE"/>
+                                    <f:selectItem itemLabel="Todos" itemValue="ALL"/>
+                                </p:selectOneMenu>
+                                <p:message for="notificationType" display="tooltip" />
+                                <p:outputLabel for="beginDate" value="Inicio"/>
+                                <p:calendar id="beginDate" value="#{appointmentBean.schedule.beginDate}" required="true" showOn="button" timeZone="#{userInfo.timeZone}" pattern="dd/MM/yyyy HH:mm">
+                                    <f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy HH:mm"/>
+                                </p:calendar>
+                                <p:message for="beginDate" display="tooltip" />
+                                <p:outputLabel for="endDate" value="fin"/>
+                                <p:calendar id="endDate" value="#{appointmentBean.schedule.endDate}" required="true" showOn="button" timeZone="#{userInfo.timeZone}" pattern="dd/MM/yyyy HH:mm">
+                                    <f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy HH:mm"/>
+                                </p:calendar>
+                                <p:message for="endDate" display="tooltip" />
+                            </p:panelGrid>
+                            <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank lesspad">
+                                <p:spacer/>
+                                <p:commandButton action="#{appointmentBean.update}" process="@form" update="appointment messageerror" value="Guardar" style="display:inline-block;margin-top:5px"/>
+                                <p:spacer/>
+                            </p:panelGrid>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

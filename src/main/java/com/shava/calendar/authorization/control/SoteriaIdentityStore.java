@@ -6,6 +6,8 @@
 package com.shava.calendar.authorization.control;
 
 import com.shava.calendar.authorization.InvalidCredentialException;
+import com.shava.calendar.authorization.InvalidPasswordException;
+import com.shava.calendar.authorization.InvalidUsernameException;
 import com.shava.calendar.authorization.entity.UserCalendar;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -44,7 +46,7 @@ public class SoteriaIdentityStore implements IdentityStore {
                 return validate(userStore.getByEmail(username).orElseThrow(InvalidCredentialException::new));
             }
 
-        } catch (InvalidCredentialException e) {
+        } catch (InvalidCredentialException | InvalidPasswordException | InvalidUsernameException e) {
             return INVALID_RESULT;
         }
         return NOT_VALIDATED_RESULT;

@@ -39,14 +39,21 @@
                     <p:panel header="Calendario" style="height:100%">
                         <p:schedule id="cita" value="#{calendarBean.model}" locale="es" timeZone="#{userInfo.timeZone}" draggable="false" 
                                     resizable="false" view="month" leftHeaderTemplate="prev,next">
-                            <p:ajax event="dateSelect" listener="#{calendarBean.onDateSelect}"
-					update="dialEvent" oncomplete="PF('eventDialog').show();" />
-				<p:ajax event="eventSelect" listener="#{calendarBean.onEventSelect}"
+                            	<p:ajax event="eventSelect" listener="#{calendarBean.onEventSelect}"
 					update="dialEvent" oncomplete="PF('eventDialog').show();" />
                         
                         </p:schedule>
+                        <f:facet name="actions">
+                            <p:commandButton ajax="false" title="Imprimir" icon="fa fa-fw fa-print" value="Imprimir">
+					<p:printer target="cita"/>
+			    </p:commandButton>
+                        </f:facet>
+                        
                     </p:panel>
-                    <p:dialog id="dialEvent" widgetVar="eventDialog" header="Detalle" showEffect="clip" hideEffect="clip" responsive="true" modal="true">
+                    <p:dialog id="dialEvent" widgetVar="eventDialog" header="Detalle" closeOnEscape="true" showEffect="clip" hideEffect="clip" responsive="true" modal="true">
+                        <f:facet name="header">
+                            <p:commandButton actionListener="#{calendarBean.deleteShedule}" process="@this" update="@form" icon="fa fa-fw fa-trash-o" title="Eliminar" styleClass="danger-btn"/>
+                        </f:facet>
                         <p:outputPanel id="dateModal" rendered="#{not empty calendarBean.scheduleSelected}" style="text-align:center;">
                             <p:panelGrid id="eventDetails" columns="2" columnClasses="label,value">
                                 <p:outputLabel for="title" value="Actividad:" />
@@ -72,8 +79,8 @@
                                 
                                 <p:outputLabel id="notificationTypeLabel" for="notificationType" value="Tipo de notificación"/>
                                 <h:outputText id="notificationType" value="#{calendarBean.scheduleSelected.notificationType}"/>
-                                
-                                
+                                <h:outputLabel/>
+                                <p:button icon="fa fa-fw fa-edit" title="Editar" outcome="appointmentedit?scheduleId=#{calendarBean.scheduleSelected.scheduleId}"/>
                             </p:panelGrid>
                         </p:outputPanel>
                     </p:dialog> 

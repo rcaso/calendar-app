@@ -35,7 +35,7 @@
                                     <h:outputText value="#{contact.mobileNumber}"/>
                                 </p:column>
                                 <p:column style="width:32px;">
-                                    <p:commandButton id="btnEdit" process="@this" update="contactForm:contactModal" oncomplete="PF('contactPopup').show()" icon="ui-icon-search" title="Editar">
+                                    <p:commandButton id="btnEdit" process="@this" update="contactForm:contactModal" oncomplete="PF('contactPopup').show()" icon="fa fa-fw fa-edit" title="Editar">
                                         <f:setPropertyActionListener value="#{contact}" target="#{contactBean.contact}" />
                                     </p:commandButton>
                                 </p:column>

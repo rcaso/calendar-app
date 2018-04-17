@@ -21,7 +21,8 @@
         <div class="card login-panel ui-fluid">
             <div class="login-panel-content">
                 <h:form id="loginForm">
-                    <p:messages closable="true"/>
+                    <p:tooltip/>
+                    <p:messages globalOnly="true" closable="true"/>
                     <div class="ui-g">
                         <div class="ui-g-12 ui-sm-6 ui-md-6" style="text-align:left;">
                             <p:graphicImage name="images/login/icon-login.svg" library="avalon-layout" />
@@ -35,7 +36,8 @@
                             <h:panelGroup>
                                 <label class="login-label">Usuario</label>
                                 <div class="login-input">
-                                    <p:inputText value="#{loginBean.login.username}" />
+                                    <p:inputText id="user" value="#{loginBean.login.username}" required="true" requiredMessage="Ingrese su correo" />
+                                    <p:message for="user" display="tooltip"/>
                                 </div>
                             </h:panelGroup>
                         </div>
@@ -43,7 +45,8 @@
                             <h:panelGroup>
                                 <label class="login-label">Password</label>
                                 <div class="login-input">
-                                    <p:password value="#{loginBean.login.password}"/>
+                                    <p:password id="pass" value="#{loginBean.login.password}" required="true" requiredMessage="Ingrese su password"/>
+                                    <p:message for="pass" display="tooltip"/>
                                 </div>
                             </h:panelGroup>
                         </div>

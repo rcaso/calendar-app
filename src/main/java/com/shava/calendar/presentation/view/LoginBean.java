@@ -62,7 +62,7 @@ public class LoginBean {
             userInfo.setUserName(user.getEmail());
             Faces.redirect("dashboard.xhtml");
         } else if (AuthenticationStatus.SEND_FAILURE.equals(status)) {
-            addGlobalError("auth.message.error.failure");
+            addGlobalError("Usuario o password invalidos");
             validationFailed();
         }
     }
