@@ -7,6 +7,30 @@
 
     <ui:define name="title">Evento</ui:define>
     <ui:define name="content">
+        <script type="text/javascript">
+            PrimeFaces.locales['es'] = {
+                closeText: 'cerrar',
+                prevText: 'Anterior',
+                nextText: 'Proximo',
+                currentText: 'Fecha Actual',
+                monthNames: ['Enero', 'Febrero', 'Mazo', 'Abril', 'Mayo', 'Junio',
+                    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+                    'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
+                dayNamesMin: ['D', 'L', 'M', 'Mi', 'J', 'V', 'S'],
+                weekHeader: 'Semana',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                month: 'Mes',
+                week: 'Semana',
+                day: 'Dia',
+                allDayText: 'Todo el dia'
+            };
+        </script>
         <h:form id="schedule">
             <div class="ui-fluid">
                 <div class="ui-g">
@@ -49,7 +73,7 @@
                         </div>
                         <div class="card">
                             <p:panelGrid id="rangeDates" columns="5" layout="grid">
-                                <p:calendar id="appDate" value="#{appointmentBean.date}" required="true" showOn="button" placeholder="Fecha" timeZone="#{userInfo.timeZone}" pattern="dd/MM/yyyy" >
+                                <p:calendar id="appDate" value="#{appointmentBean.date}" locale="es" required="true" showOn="button" placeholder="Fecha" timeZone="#{userInfo.timeZone}" pattern="dd/MM/yyyy" >
                                     <f:convertDateTime type="localDate" pattern="dd/MM/yyyy"/>
                                 </p:calendar>
                                 <p:message for="appDate" display="tooltip"/>

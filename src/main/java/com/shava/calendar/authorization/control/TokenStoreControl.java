@@ -56,12 +56,13 @@ public class TokenStoreControl {
         token.setDescription(description);
         token.setTokenType(tokenType);
         token.setIpAddress(ipAddress);
-        account.addToken(token);
-        crudService.update(account);
+        token.setAccount(account);
+//        account.addToken(token);
+        crudService.update(token);
     }
 
     public void remove(String token) {
-        crudService.getEntityManager().createNamedQuery(Token.REMOVE_TOKEN, Token.class)
+        crudService.getEntityManager().createNamedQuery(Token.REMOVE_TOKEN)
                 .setParameter("tokenHash", token).executeUpdate();
     }
 

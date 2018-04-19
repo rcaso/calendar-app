@@ -7,6 +7,30 @@
 
     <ui:define name="title">Evento</ui:define>
     <ui:define name="content">
+        <script type="text/javascript">
+            PrimeFaces.locales['es'] = {
+                closeText: 'cerrar',
+                prevText: 'Anterior',
+                nextText: 'Proximo',
+                currentText: 'Fecha Actual',
+                monthNames: ['Enero', 'Febrero', 'Mazo', 'Abril', 'Mayo', 'Junio',
+                    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+                    'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mier', 'Jue', 'Vie', 'Sab'],
+                dayNamesMin: ['D', 'L', 'M', 'Mi', 'J', 'V', 'S'],
+                weekHeader: 'Semana',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                month: 'Mes',
+                week: 'Semana',
+                day: 'Dia',
+                allDayText: 'Todo el dia'
+            };
+        </script>
         <f:metadata>
             <f:importConstants type="com.shava.calendar.appointment.entity.ActivedType"/>
             <f:viewAction action="#{appointmentBean.loadSchedule}" />
@@ -44,12 +68,12 @@
                                 </p:selectOneMenu>
                                 <p:message for="notificationType" display="tooltip" />
                                 <p:outputLabel for="beginDate" value="Inicio"/>
-                                <p:calendar id="beginDate" value="#{appointmentBean.schedule.beginDate}" required="true" showOn="button" timeZone="#{userInfo.timeZone}" pattern="dd/MM/yyyy HH:mm">
+                                <p:calendar id="beginDate" value="#{appointmentBean.schedule.beginDate}" locale="es" required="true" showOn="button" timeZone="#{userInfo.timeZone}" pattern="dd/MM/yyyy HH:mm">
                                     <f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy HH:mm"/>
                                 </p:calendar>
                                 <p:message for="beginDate" display="tooltip" />
                                 <p:outputLabel for="endDate" value="fin"/>
-                                <p:calendar id="endDate" value="#{appointmentBean.schedule.endDate}" required="true" showOn="button" timeZone="#{userInfo.timeZone}" pattern="dd/MM/yyyy HH:mm">
+                                <p:calendar id="endDate" value="#{appointmentBean.schedule.endDate}" locale="es" required="true" showOn="button" timeZone="#{userInfo.timeZone}" pattern="dd/MM/yyyy HH:mm">
                                     <f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy HH:mm"/>
                                 </p:calendar>
                                 <p:message for="endDate" display="tooltip" />
