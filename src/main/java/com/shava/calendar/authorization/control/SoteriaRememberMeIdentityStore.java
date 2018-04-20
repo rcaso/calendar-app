@@ -8,6 +8,7 @@ package com.shava.calendar.authorization.control;
 import static com.shava.calendar.authorization.entity.TokenType.REMEMBER_ME;
 import static org.omnifaces.util.Servlets.getRemoteAddr;
 import com.shava.calendar.authorization.entity.UserCalendar;
+import com.shava.calendar.presentation.view.UserInfo;
 import java.util.Optional;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
@@ -18,6 +19,7 @@ import javax.security.enterprise.identitystore.CredentialValidationResult;
 import static javax.security.enterprise.identitystore.CredentialValidationResult.INVALID_RESULT;
 import javax.security.enterprise.identitystore.RememberMeIdentityStore;
 import javax.servlet.http.HttpServletRequest;
+import org.omnifaces.util.Beans;
 
 /**
  *
@@ -40,7 +42,13 @@ public class SoteriaRememberMeIdentityStore implements RememberMeIdentityStore{
         Optional<UserCalendar> account = this.userStore.getByLoginToken(rmc.getToken(), REMEMBER_ME);
 
         if (account.isPresent()) {
-            return new CredentialValidationResult(new CallerPrincipal(account.get().getEmail()));
+            //create userInfo
+            UserCalendar user = account.get();
+            UserInfo userInfo = Beans.getInstance(UserInfo.class,true);
+            userInfo.setFullName(user.getFirstName()+" "+user.getLastName());
+            userInfo.setUserId(user.getUserCalendarId());
+            userInfo.setUserName(user.getEmail());
+            return new CredentialValidationResult(new CallerPrincipal(user.getEmail()));
         } else {
             return INVALID_RESULT;
         }

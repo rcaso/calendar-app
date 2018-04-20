@@ -18,14 +18,14 @@ import static java.time.Instant.now;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 import static java.util.UUID.randomUUID;
-import javax.enterprise.context.ApplicationScoped;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 /**
  *
  * @author raul
  */
-@ApplicationScoped
+@Stateless
 public class TokenStoreControl {
 
     @Inject
