@@ -38,7 +38,7 @@
                 <div class="ui-g-12">
                     <p:panel header="Calendario" style="height:100%">
                         <p:schedule id="cita" value="#{calendarBean.model}" locale="es" timeZone="#{userInfo.timeZone}" draggable="false" 
-                                    resizable="false" view="month" leftHeaderTemplate="prev,next">
+                                    resizable="false" view="month" minTime="06:00:00"  leftHeaderTemplate="prev,next">
                             	<p:ajax event="eventSelect" listener="#{calendarBean.onEventSelect}"
 					update="dialEvent" oncomplete="PF('eventDialog').show();" />
                         
